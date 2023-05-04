@@ -48,13 +48,14 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
-        vieuxpotentiel = constant_voltage
-        potentiel = constant_voltage
+        pot = constant_voltage
+        vpot = np.zeros(constant_voltage.shape)
+        grille = []
         for _ in range(self.nb_iterations):
-            potentiel = 0.25*(potentiel[:-2, 1:-1]+potentiel[2:, 1:-1]+potentiel[1:-1, :-2]+potentiel[1:-1, 2:])
-            vieuxpotentiel[1:-1, 1:-1] = potentiel
-            potentiel = vieuxpotentiel 
-        return ScalarField(potentiel)
+            grille = 0.25*(pot[:-2, 1:-1]+pot[2:, 1:-1]+pot[1:-1, :-2]+pot[1:-1, 2:])
+            vpot[1:-1, 1:-1] = grille
+            pot = vpot 
+        return ScalarField(pot)
 
     def _solve_in_polar_coordinate(
             self,

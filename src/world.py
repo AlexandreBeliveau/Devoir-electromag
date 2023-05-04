@@ -6,7 +6,7 @@ from scipy.constants import mu_0, pi
 from src.biot_savart_equation_solver import BiotSavartEquationSolver
 from src.circuit import Circuit
 from src.coordinate_and_position import CoordinateSystem, Position
-from src.fields import VectorField
+from src.fields import VectorField, ScalarField
 from src.laplace_equation_solver import LaplaceEquationSolver
 
 
@@ -148,6 +148,8 @@ class World:
         
         pierresimon = LaplaceEquationSolver(nb_relaxation_iterations)
         self._potential = pierresimon.solve(self._circuit_voltage, self._coordinate_system, self.delta_q1, self.delta_q2)
+
+        self._electric_field = -self._potential.gradient()
 
     def show_circuit(self, nodes_position_in_figure: dict = None):
         """
