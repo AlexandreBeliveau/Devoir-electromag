@@ -48,12 +48,12 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
-        vieuxpotentiel = potentiel = constant_voltage
+        vieuxpotentiel = constant_voltage
+        potentiel = constant_voltage
         for _ in range(self.nb_iterations):
-            potentiel = 0,25*(potentiel[:-2, 1:-1]+potentiel[2:, 1:-1]+potentiel[1:-1, 0:-2]+potentiel[2:, 1:-1])
+            potentiel = 0.25*(potentiel[:-2, 1:-1]+potentiel[2:, 1:-1]+potentiel[1:-1, :-2]+potentiel[1:-1, 2:])
             vieuxpotentiel[1:-1, 1:-1] = potentiel
-            # opération pas legit
-            vieuxpotentiel = potentiel 
+            potentiel = vieuxpotentiel 
         return ScalarField(potentiel)
 
     def _solve_in_polar_coordinate(
