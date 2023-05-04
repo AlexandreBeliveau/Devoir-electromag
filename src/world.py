@@ -147,7 +147,7 @@ class World:
         """
         
         pierresimon = LaplaceEquationSolver(nb_relaxation_iterations)
-        self.potential = pierresimon.solve(self._circuit_voltage, self._coordinate_system, 1, 1)
+        self._potential = pierresimon.solve(self._circuit_voltage, self._coordinate_system, self.delta_q1, self.delta_q2)
 
     def show_circuit(self, nodes_position_in_figure: dict = None):
         """
