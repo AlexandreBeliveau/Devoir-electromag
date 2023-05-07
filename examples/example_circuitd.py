@@ -1,6 +1,7 @@
 import env_examples  # Modifies path, DO NOT REMOVE
 
 from sympy import Symbol
+import numpy as np
 
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 
@@ -25,9 +26,22 @@ if __name__ == "__main__":
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
+    x_expression_diagonal = x
+    y_expression_diagonal = y
+    diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
+
+    theta_1 = np.pi / 24
+    theta_2 = np.pi / 3
     # Simulation en cartésien du d)
     wires = [
-        
+        Wire((60*np.cos(theta_1), 60*np.sin(theta_1)), (74*np.cos(theta_1), 74*np.sin(theta_1)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((74*np.cos(theta_1), 74*np.sin(theta_1)), (74 * np.cos(np.pi / 7), 74 * np.sin(np.pi / 7)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((74 * np.cos(np.pi / 7), 74 * np.sin(np.pi / 7)), (74 * np.cos(2*np.pi / 9), 74 * np.sin(2*np.pi / 9)), diagonal_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
+        Wire((74 * np.cos(2*np.pi / 9), 74 * np.sin(2*np.pi / 9)), (74 * np.cos(theta_2), 74 * np.sin(theta_2)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((74 * np.cos(theta_2), 74 * np.sin(theta_2)), (60 * np.cos(theta_2), 60 * np.sin(theta_2)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((60 * np.cos(theta_2), 60 * np.sin(theta_2)), (60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)), (60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7)), diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE),
+        Wire((60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7)), (60*np.cos(theta_1), 60*np.sin(theta_1)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
         
     ]
 
@@ -36,12 +50,17 @@ if __name__ == "__main__":
 
     ]
 
-    ground_position = (40, 26)
+    ground_position = ((60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)))
 
     circuit = Circuit(wires, ground_position)
-    world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
+    world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (40, 26), 1: (60, 26), 2: (74, 50), 3: (60, 74), 4: (40, 74), 5: (26, 50)}
+        {0: (60*np.cos(theta_1), 60*np.sin(theta_1)),
+        1: (74*np.cos(theta_1), 74*np.sin(theta_1)), 2: (74 * np.cos(np.pi / 7), 74 * np.sin(np.pi / 7)), 
+        3: (74 * np.cos(2*np.pi / 9), 74 * np.sin(2*np.pi / 9)), 4: (74 * np.cos(theta_2), 74 * np.sin(theta_2)), 
+        5: (60 * np.cos(theta_2), 60 * np.sin(theta_2)), 6: (60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)),
+        7: (60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7))
+        }
     )
     world.compute()
     world.show_all()
