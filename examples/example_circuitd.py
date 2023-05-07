@@ -22,7 +22,7 @@ if __name__ == "__main__":
     y_expression_vertical = y
     vertical_eqs = (x_expression_vertical, y_expression_vertical)
 
-    x_expression_horizontal = x
+    x_expression_horizontal = x # Pour le polaire on considère que les x sont les r et le y sont les thetas...
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
@@ -41,13 +41,7 @@ if __name__ == "__main__":
         Wire((74 * np.cos(theta_2), 74 * np.sin(theta_2)), (60 * np.cos(theta_2), 60 * np.sin(theta_2)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
         Wire((60 * np.cos(theta_2), 60 * np.sin(theta_2)), (60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
         VoltageSource((60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)), (60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7)), diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE),
-        Wire((60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7)), (60*np.cos(theta_1), 60*np.sin(theta_1)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
-        
-    ]
-
-    # Simulation en polaire du d)
-    pwires = [
-
+        Wire((60 * np.cos(np.pi / 7), 60 * np.sin(np.pi / 7)), (60*np.cos(theta_1), 60*np.sin(theta_1)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE) 
     ]
 
     ground_position = ((60 * np.cos(2*np.pi / 9), 60 * np.sin(2*np.pi / 9)))
