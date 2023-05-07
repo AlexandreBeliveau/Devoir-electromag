@@ -17,7 +17,7 @@ class Circuit:
     sources. A circuit can be solved to find the potential at each node and the current flowing through each component
     with kirchoff's laws.
     """
-
+    
     COMPONENT_KEY = "component"
     NODE_KEY = "node"
 

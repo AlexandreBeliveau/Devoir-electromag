@@ -48,12 +48,16 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
+        # Le tableau qui contient le potentiel qu'on découpe
         pot = constant_voltage
+        # Le tableau qui restera de la même grosseur que WORLD
         vpot = np.zeros(constant_voltage.shape)
-        grille = []
+        # On fait la relaxion x nombre de fois
         for _ in range(self.nb_iterations):
-            grille = 0.25*(pot[:-2, 1:-1]+pot[2:, 1:-1]+pot[1:-1, :-2]+pot[1:-1, 2:])
-            vpot[1:-1, 1:-1] = grille
+            # On découpe le potentiel pour faire la moyenne de ses voisins
+            pot = 0.25*(pot[:-2, 1:-1]+pot[2:, 1:-1]+pot[1:-1, :-2]+pot[1:-1, 2:])
+            # On revient à une dimension normale et on recommence 
+            vpot[1:-1, 1:-1] = pot
             pot = vpot 
         return ScalarField(pot)
 
