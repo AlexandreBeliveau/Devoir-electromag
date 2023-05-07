@@ -87,11 +87,12 @@ class LaplaceEquationSolver:
         pot = constant_voltage
         vpot = np.zeros(constant_voltage.shape)
         M = constant_voltage.shape[1]
-        grille = []
+        r = constant_voltage[0]
         for _ in range(self.nb_iterations):
-            grille = (np.pi/2*M)**2()
-            vpot[1:-1, 1:-1] = grille
-        raise ScalarField(pot)
+            pot = (1/(4*(r**2*((np.pi/(2*M))**2))+1))*((np.pi/2*M)**2)(r)(2*r+1)*(pot[:-2, 1:-1])+((np.pi/2*M)**2)(r)(2*r-1)*(pot[2:,1:-1])+2*(pot[1:-1,:-2]+pot[1:-1,2:])
+            vpot[1:-1,1:-1] = pot
+            pot = vpot
+        return ScalarField(pot)
 
     def solve(
             self,
