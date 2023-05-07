@@ -14,6 +14,9 @@ if __name__ == "__main__":
     cartesian_variables = Symbol("x"), Symbol("y")
     x, y = cartesian_variables
 
+    polar_variables = Symbol('r'), Symbol('theta')
+    r, theta = polar_variables
+
     x_expression_vertical = 0 * x
     y_expression_vertical = y
     vertical_eqs = (x_expression_vertical, y_expression_vertical)
@@ -22,21 +25,21 @@ if __name__ == "__main__":
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
-    x_expression_diagonal = x
-    y_expression_diagonal = y
-    diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
+    # Simulation en cartésien du d)
     wires = [
-        VoltageSource((40, 26), (60, 26), horizontal_eqs, cartesian_variables, BATTERY_VOLTAGE),
-        Wire((60, 26), (74, 50), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 50), (60, 74), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE), 
-        Wire((60, 74), (40, 74), horizontal_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE), 
-        Wire((40, 74), (26, 50), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE), 
-        Wire((26, 50), (40, 26), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
+        
+        
     ]
+
+    # Simulation en polaire du d)
+    pwires = [
+
+    ]
+
     ground_position = (40, 26)
 
     circuit = Circuit(wires, ground_position)
-    world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
+    world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
         {0: (40, 26), 1: (60, 26), 2: (74, 50), 3: (60, 74), 4: (40, 74), 5: (26, 50)}
     )
