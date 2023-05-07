@@ -84,7 +84,14 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(r, θ) = 0 if (r, θ) is not a point belonging to an electrical component of the circuit.
         """
-        raise NotImplementedError
+        pot = constant_voltage
+        vpot = np.zeros(constant_voltage.shape)
+        M = constant_voltage.shape[1]
+        grille = []
+        for _ in range(self.nb_iterations):
+            grille = (np.pi/2*M)**2()
+            vpot[1:-1, 1:-1] = grille
+        raise ScalarField(pot)
 
     def solve(
             self,
