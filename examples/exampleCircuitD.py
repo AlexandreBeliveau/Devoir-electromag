@@ -11,33 +11,33 @@ if __name__ == "__main__":
     HIGH_WIRE_RESISTANCE = 1.0
     LOW_WIRE_RESISTANCE = 0.01
 
-    cartesian_variables = Symbol("x"), Symbol("y")
-    x, y = cartesian_variables
+    polar_variables = Symbol("r"), Symbol("θ")
+    r, θ = polar_variables
 
-    x_expression_vertical = 0 * x
-    y_expression_vertical = y
-    vertical_eqs = (x_expression_vertical, y_expression_vertical)
+    r_expression_vertical = 0 * r
+    θ_expression_vertical = θ
+    vertical_eqs = (r_expression_vertical, θ_expression_vertical)
 
-    x_expression_horizontal = x
-    y_expression_horizontal = 0 * y
-    horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
+    r_expression_horizontal = r
+    θ_expression_horizontal = 0 * θ
+    horizontal_eqs = (r_expression_horizontal, θ_expression_horizontal)
 
     wires = [
-        Wire((26, 60), (26, 74), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((26, 74), (74, 74), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 74), (74, 60), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 60), (74, 40), vertical_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE),
-        Wire((74, 40), (74, 26), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 26), (26, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((26, 26), (26, 40), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((26, 40), (26, 60), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE)
+        Wire((20, 60),(30, 60), horizontal_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((30, 60), (30, 40), vertical_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((30, 40), (30, 35), vertical_eqs, polar_variables, HIGH_WIRE_RESISTANCE),
+        Wire((30, 35), (30, 15), vertical_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((30, 15), (20, 15), horizontal_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        Wire((20, 15), (20, 35), vertical_eqs, polar_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((20, 35), (20, 40), vertical_eqs, polar_variables, BATTERY_VOLTAGE),
+        Wire((20, 40), (20, 60), vertical_eqs, polar_variables, LOW_WIRE_RESISTANCE)
     ]
-    ground_position = (26, 40)
+    ground_position = (20, 35)
 
     circuit = Circuit(wires, ground_position)
-    world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
+    world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (26, 60), 1: (26, 74), 2: (74, 74), 3: (74, 60), 4: (74, 40), 5: (74, 26), 6: (26, 26), 7: (26, 40)}
+        {0: (20, 60), 1: (30, 60), 2: (30, 40), 3: (30, 35), 4: (30, 15), 5: (20, 15), 6: (20, 35), 7: (40, 40)}
     )
     world.compute()
     world.show_all()
