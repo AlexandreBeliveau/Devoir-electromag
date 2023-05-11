@@ -48,7 +48,7 @@ if __name__ == "__main__":
     ground_position = ((60, np.pi/7))
 
     circuit = Circuit(wires, ground_position)
-    world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
+    world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
         {0: (60, theta_1), 1: (74, theta_1), 2: (74, np.pi/7), 3: (74, 2*np.pi/9), 4: (74, theta_2), 5: (60, theta_2), 6: (60, 2*np.pi/9),
         7: (60, np.pi/7)}
