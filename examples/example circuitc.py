@@ -1,6 +1,7 @@
 import env_examples  # Modifies path, DO NOT REMOVE
 
 from sympy import Symbol
+import numpy as np
 
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
 
@@ -22,9 +23,7 @@ if __name__ == "__main__":
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
-    x_expression_diagonal = x
-    y_expression_diagonal = y
-    diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
+    r_expression = np.sqrt(x_expression_horizontal)
     wires = [
         VoltageSource((40, 26), (60, 26), horizontal_eqs, cartesian_variables, BATTERY_VOLTAGE),
         Wire((60, 26), (74, 50), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
