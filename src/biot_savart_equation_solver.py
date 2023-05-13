@@ -38,10 +38,41 @@ class BiotSavartEquationSolver:
             B_z(x, y) are the 3 components of the magnetic vector at a given point (x, y) in space. Note that
             B_x = B_y = 0 is always True in our 2D world.
         """
-        
+        I_x = electric_current.x
+        I_y = electric_current.y
+        N, M = I_x.shape
 
-        
-        raise NotImplementedError
+        B_z = np.zeros((N, M))
+
+        coord_x = np.stack(np.nonzero(I_x), axis=1)
+        coord_y = np.stack(np.nonzero(I_y), axis=1)
+
+        # On calcule Biot Savard pour tous les courants en x
+        for i, j in coord_x:
+            I = I_x[i][j]
+
+            # On itère sur toutes la grille
+            for x in range(N):
+                for y in range(M):
+                    # Évite les divisions par 0
+                    if (i, j) != (x, y):
+                        B_z[x, y] += mu_0*I/4/pi*(y-j)/((x-i)**2+(y-j)**2)**3
+
+        # On calcule Biot Savard pour tous les courants en y
+        for i, j in coord_y:
+            I = I_y[i][j]
+
+            # On itère sur toutes la grille
+            for x in range(N):
+                for y in range(M):
+                    # Évite les divisions par 0
+                    if (i, j) != (x, y):
+                        B_z[x, y] += I*(i-x)/((x-i)**2+(y-j)**2)**3
+        B_z = mu_0/(4*pi)*B_z
+        # On crée une 3Darray
+        B = np.dstack((np.zeros((N, M)), np.zeros((N, M)), B_z))
+        return VectorField(B)
+    
 
     def _solve_in_polar_coordinate(
             self,
