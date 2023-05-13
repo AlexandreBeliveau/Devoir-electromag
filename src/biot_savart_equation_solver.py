@@ -56,7 +56,7 @@ class BiotSavartEquationSolver:
                 for y in range(M):
                     # Évite les divisions par 0
                     if (i, j) != (x, y):
-                        B_z[x, y] += I*(y-j)/((x-i)**2+(y-j)**2)**(3/2)
+                        B_z[x, y] += I*(y-j)*delta_x/((x-i)**2+(y-j)**2)**(3/2)
 
         # On calcule Biot Savard pour tous les courants en y
         for i, j in coord_y:
@@ -67,7 +67,7 @@ class BiotSavartEquationSolver:
                 for y in range(M):
                     # Évite les divisions par 0
                     if (i, j) != (x, y):
-                        B_z[x, y] += I*(i-x)/((x-i)**2+(y-j)**2)**(3/2)
+                        B_z[x, y] += I*(i-x)*delta_y/((x-i)**2+(y-j)**2)**(3/2)
         # On crée une 3Darray
         B = np.dstack((np.zeros((N, M)), np.zeros((N, M)), mu_0/(4*pi)*B_z))
         return VectorField(B)
@@ -100,36 +100,36 @@ class BiotSavartEquationSolver:
             B_z(r, θ) are the 3 components of the magnetic vector at a given point (r, θ) in space. Note that
             B_r = B_θ = 0 is always True in our 2D world.
         """
-        I_x = electric_current.x
-        I_y = electric_current.y
-        N, M = I_x.shape
+        I_r = electric_current.x
+        I_th = electric_current.y
+        N, M = I_r.shape
 
         B_z = np.zeros((N, M))
 
-        coord_x = np.stack(np.nonzero(I_x), axis=1)
-        coord_y = np.stack(np.nonzero(I_y), axis=1)
+        coord_r = np.stack(np.nonzero(I_r), axis=1)
+        coord_th = np.stack(np.nonzero(I_th), axis=1)
 
-        # On calcule Biot Savard pour tous les courants en x
-        for i, j in coord_x:
-            I = I_x[i, j]
+        # On calcule Biot Savard pour tous les courants en r
+        for i, j in coord_r:
+            I = I_r[i, j]
 
             # On itère sur toutes la grille
-            for x in range(N):
-                for y in range(M):
+            for r in range(N):
+                for th in range(M):
                     # Évite les divisions par 0
-                    if (i, j) != (x, y):
-                        B_z[x, y] += I*(y-j)/((x-i)**2+(y-j)**2)**(3/2)
+                    if (i, j) != (r, th):
+                        B_z[r, th] += I*(th-j)*delta_r/((r-i)**2+(th-j)**2)**(3/2)
 
         # On calcule Biot Savard pour tous les courants en y
-        for i, j in coord_y:
-            I = I_y[i, j]
+        for i, j in coord_th:
+            I = I_th[i, j]
 
             # On itère sur toutes la grille
-            for x in range(N):
-                for y in range(M):
+            for r in range(N):
+                for th in range(M):
                     # Évite les divisions par 0
-                    if (i, j) != (x, y):
-                        B_z[x, y] += I*(i-x)/((x-i)**2+(y-j)**2)**(3/2)
+                    if (i, j) != (r, th):
+                        B_z[r, th] += I*(i-r)*delta_theta/((r-i)**2+(th-j)**2)**(3/2)
         # On crée une 3Darray
         B = np.dstack((np.zeros((N, M)), np.zeros((N, M)), mu_0/(4*pi)*B_z))
         return VectorField(B)
