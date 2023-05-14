@@ -1,6 +1,6 @@
 import env_examples  # Modifies path, DO NOT REMOVE
 
-from sympy import Symbol
+from sympy import Symbol, Pow, Add, atan, Mul
 import numpy as np
 
 from src import Circuit, CoordinateSystem, VoltageSource, Wire, World
@@ -23,21 +23,25 @@ if __name__ == "__main__":
     y_expression_horizontal = 0 * y
     horizontal_eqs = (x_expression_horizontal, y_expression_horizontal)
 
-    r_expression = np.sqrt(x_expression_horizontal)
-    wires = [
-        VoltageSource((40, 26), (60, 26), horizontal_eqs, cartesian_variables, BATTERY_VOLTAGE),
-        Wire((60, 26), (74, 50), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 50), (60, 74), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE), 
-        Wire((60, 74), (40, 74), horizontal_eqs, cartesian_variables, HIGH_WIRE_RESISTANCE), 
-        Wire((40, 74), (26, 50), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE), 
-        Wire((26, 50), (40, 26), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
-    ]
-    ground_position = (40, 26)
+    x_expression_diagonal = x
+    y_expression_diagonal = y
+    diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
+
+    wires = []
+    r = 60
+    pas = 0.2
+    theta = np.arange(0 , 2*np.pi-pas, pas)
+    
+    for i in theta:
+        wires.append(Wire((r*np.cos(i), r*np.sin(i)), (r*np.cos(i+(pas)), r*np.sin(i+(pas))), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
+    wires.append(Wire((r*np.cos(theta[-1]), r*np.sin(theta[-1])), (r*np.cos(2*np.pi), r*np.sin(2*np.pi)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
+    ground_position = (60, 0)
+    print(len(wires))
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (40, 26), 1: (60, 26), 2: (74, 50), 3: (60, 74), 4: (40, 74), 5: (26, 50)}
+        {0: (0, 0), 1: (60, 26), 2: (74, 50), 3: (60, 74), 4: (40, 74), 5: (26, 50)}
     )
     world.compute()
     world.show_all()
