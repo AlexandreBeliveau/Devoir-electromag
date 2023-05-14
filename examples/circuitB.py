@@ -38,12 +38,16 @@ if __name__ == "__main__":
         Wire((58, 43), (58, 26), vertical_eqs, cartesian_variables ,LOW_WIRE_RESISTANCE),
         Wire((58, 26), (42, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
 
-        Wire((58, 74), (74, 74), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 74), (74, 57), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        VoltageSource((74, 57), (74, 43), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
-        Wire((74, 43), (74, 26), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
-        Wire((74, 26), (58, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
-
+        #Wire((58, 74), (74, 74), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        #Wire((74, 74), (74, 57), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        #VoltageSource((74, 57), (74, 43), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
+        #Wire((74, 43), (74, 26), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        #Wire((74, 26), (58, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
+        Wire((58,26), (74, 26), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((74, 26), (74,43), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        VoltageSource((74,43), (74,57), vertical_eqs, cartesian_variables, BATTERY_VOLTAGE),
+        Wire((74,57), (74,74), vertical_eqs, cartesian_variables, LOW_WIRE_RESISTANCE),
+        Wire((74,74), (58,74), horizontal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE)
 
     ]
     ground_position = (26, 43)#ya deux grounds xddd wsh
@@ -55,7 +59,8 @@ if __name__ == "__main__":
     world.show_circuit(
         {0: (26, 74), 1: (42, 74), 2: (42, 57), 3: (42, 43), 4: (42, 26), 5: (26, 26), 6: (26, 43), 7: (26, 57),
         8: (42, 74), 9: (58, 74), 10: (58, 57), 11: (58, 43), 12: (58, 26),
-        13: (58, 74), 14: (74, 74), 15: (74, 57), 16: (73, 43), 17: (74, 26)}
+        13: (58,26), 14: (74, 26), 15: (74,43), 16: (74,57), 17: (74,74)}
+
     )
     world.compute()
     world.show_all()
