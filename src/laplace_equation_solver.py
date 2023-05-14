@@ -48,16 +48,19 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(x, y) = 0 if (x, y) is not a point belonging to an electrical component of the circuit.
         """
+        # Tableau qui contient le potentiel des fils qui reste fixe
+        fil = np.copy(constant_voltage)
         # Le tableau qui contient le potentiel qu'on découpe
-        pot = constant_voltage
+        pot = np.copy(constant_voltage)
         # Le tableau qui restera de la même grosseur que WORLD
         vpot = np.zeros(constant_voltage.shape)
         # On fait la relaxion x nombre de fois
         for _ in range(self.nb_iterations):
             # On découpe le potentiel pour faire la moyenne de ses voisins
             pot = 1/(2*(delta_x**2+delta_y**2))*(delta_y**2*(pot[:-2, 1:-1]+pot[2:, 1:-1])+delta_x**2*(pot[1:-1, :-2]+pot[1:-1, 2:]))
+            # On remet le potentiel initial pour les fils
+            vpot[1:-1, 1:-1] = np.where(fil[1:-1, 1:-1] == 0, pot, fil[1:-1, 1:-1])
             # On revient à une dimension normale et on recommence 
-            vpot[1:-1, 1:-1] = pot
             pot = vpot 
         return ScalarField(pot)
 
@@ -88,22 +91,23 @@ class LaplaceEquationSolver:
             the electrical components and in the empty space between the electrical components, while the field V
             always gives V(r, θ) = 0 if (r, θ) is not a point belonging to an electrical component of the circuit.
         """
-        
+        # Tableau qui contient le potentiel des fils qui reste fixe
+        fil = np.copy(constant_voltage)
         #On commence en posant l'état initiale et la matrice de relaxation:
         vpot = np.copy(constant_voltage)
         #La fonction pad est utilisée mettre des 0 sur les bords de la matrice
-        vpotRelax = np.pad(np.copy(constant_voltage)[1:-1, 1:-1], (1,1), 'constant', constant_values=0)
+        vpotRelax = np.pad(vpot[1:-1, 1:-1], (1,1), 'constant', constant_values=0)
         #On doit ensuite créer la matrice r qui a les mêmes dimensions que la matrice de relaxation et où les valeurs des éléments sur la ligne sont la valeur de l'indice de la ligne
         # on utilise alors la fonction np.indice de numpy:
         r = ((np.indices(vpotRelax.shape)[0])+1)*delta_r
         #on peut ensuite faire la relaxation avec l'équation trouvé dans la partie théorique: 
         for _ in range(self.nb_iterations):
-
+            # On relaxe le potentiel
             vpotRelax[1:-1,1:-1] = ((delta_theta**2)*r[1:-1,1:-1]*(2*r[1:-1,1:-1]+delta_r)*vpotRelax[:-2,1:-1]+\
                      delta_theta**2*r[1:-1,1:-1]*(2*r[1:-1,1:-1]-delta_r)*vpotRelax[2:,1:-1]+\
                      2*delta_r**2*(vpotRelax[1:-1,:-2]+vpotRelax[1:-1,2:]))/(4 * (r[1:-1,1:-1]**2 * delta_theta**2 +  delta_r **2))
-
-
+            # On remet le potentiel constant des fils
+            vpotRelax[1:-1,1:-1] = np.where(fil[1:-1, 1:-1] == 0, vpotRelax[1:-1, 1:-1], fil[1:-1, 1:-1])
         return ScalarField(vpotRelax)
 
     def solve(
