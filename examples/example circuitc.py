@@ -26,10 +26,10 @@ if __name__ == "__main__":
     x_expression_diagonal = x
     y_expression_diagonal = y
     diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
-
+    
     old_x = 75
     old_y = 42
-    sides = 252
+    sides = 64
     wires = []
     r = 30
     old_theta = 0
@@ -49,6 +49,11 @@ if __name__ == "__main__":
 
     wires.append(Wire((old_x, old_y), (77, 42), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
     wires.append(VoltageSource((77, 42), (75, 42), diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE))
+    '''
+    wires = [
+        Wire((75, 42), ())
+    ]
+    '''
     ground_position = (77, 42)
 
     circuit = Circuit(wires, ground_position)
