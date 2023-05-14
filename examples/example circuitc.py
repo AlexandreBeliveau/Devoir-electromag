@@ -29,11 +29,11 @@ if __name__ == "__main__":
 
     old_x = 75
     old_y = 42
-    sides = 200
+    sides = 252
     wires = []
     r = 30
     old_theta = 0
-    theta_start = (3*np.pi)/2
+    theta_start = 0
     pas = 0.1
     for i in range(1, sides):
         theta = old_theta + pas
@@ -46,7 +46,7 @@ if __name__ == "__main__":
         wire = Wire((old_x, old_y), (new_x, new_y), diagonal_eqs, cartesian_variables, resistance)
         wires.append(wire)
         old_x, old_y, old_theta = new_x, new_y, theta
-    
+
     wires.append(Wire((old_x, old_y), (77, 42), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
     wires.append(VoltageSource((77, 42), (75, 42), diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE))
     ground_position = (77, 42)
