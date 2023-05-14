@@ -27,20 +27,32 @@ if __name__ == "__main__":
     y_expression_diagonal = y
     diagonal_eqs = (x_expression_diagonal, y_expression_diagonal)
 
+    old_x = 75
+    old_y = 42
+    sides = 200
     wires = []
-    r = 60
-    pas = np.pi/12
-    theta = np.arange(0 , 2*np.pi, pas)
-    for i in theta:
-        wires.append(Wire((r*np.cos(i), r*np.sin(i)), (r*np.cos(i+pas), r*np.sin(i+pas)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-    wires.append(Wire((r*np.cos(theta[-1]), r*np.sin(theta[-1])), (r*np.cos(2*np.pi), r*np.sin(2*np.pi)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
-    ground_position = (60, 0)
-    print(np.sin(np.pi/2))
+    r = 30
+    old_theta = 0
+    theta_start = (3*np.pi)/2
+    pas = 0.1
+    for i in range(1, sides):
+        theta = old_theta + pas
+        if theta > theta_start-np.pi-0.1 and theta < theta_start-np.pi+0.1:
+            resistance = HIGH_WIRE_RESISTANCE
+        else:
+            resistance = LOW_WIRE_RESISTANCE
+        new_x = ((np.cos(theta) - np.cos(old_theta))*r) + old_x
+        new_y = ((np.sin(theta) - np.sin(old_theta))*r) + old_y
+        wire = Wire((old_x, old_y), (new_x, new_y), diagonal_eqs, cartesian_variables, resistance)
+        wires.append(wire)
+        old_x, old_y, old_theta = new_x, new_y, theta
+    
+    wires.append(Wire((old_x, old_y), (77, 42), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
+    wires.append(VoltageSource((77, 42), (75, 42), diagonal_eqs, cartesian_variables, BATTERY_VOLTAGE))
+    ground_position = (77, 42)
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
-    world.show_circuit(
-        {0: (0, 0), 1: (60, 26), 2: (74, 50), 3: (60, 74), 4: (40, 74), 5: (26, 50)}
-    )
+    world.show_circuit()
     world.compute()
     world.show_all()
