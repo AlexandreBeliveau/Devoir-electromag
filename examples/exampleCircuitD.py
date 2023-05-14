@@ -37,7 +37,7 @@ if __name__ == "__main__":
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.POLAR, shape=WORLD_SHAPE)
     world.show_circuit(
-        {0: (20, 60), 1: (30, 60), 2: (30, 40), 3: (30, 35), 4: (30, 15), 5: (20, 15), 6: (20, 35), 7: (40, 40)}
+        {0: (20, 60), 1: (30, 60), 2: (30, 40), 3: (30, 35), 4: (30, 15), 5: (20, 15), 6: (20, 35), 7: (20, 40)}
     )
     world.compute()
     world.show_all()
