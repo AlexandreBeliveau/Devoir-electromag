@@ -29,14 +29,13 @@ if __name__ == "__main__":
 
     wires = []
     r = 60
-    pas = 0.2
-    theta = np.arange(0 , 2*np.pi-pas, pas)
-    
+    pas = np.pi/12
+    theta = np.arange(0 , 2*np.pi, pas)
     for i in theta:
-        wires.append(Wire((r*np.cos(i), r*np.sin(i)), (r*np.cos(i+(pas)), r*np.sin(i+(pas))), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
+        wires.append(Wire((r*np.cos(i), r*np.sin(i)), (r*np.cos(i+pas), r*np.sin(i+pas)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
     wires.append(Wire((r*np.cos(theta[-1]), r*np.sin(theta[-1])), (r*np.cos(2*np.pi), r*np.sin(2*np.pi)), diagonal_eqs, cartesian_variables, LOW_WIRE_RESISTANCE))
     ground_position = (60, 0)
-    print(len(wires))
+    print(np.sin(np.pi/2))
 
     circuit = Circuit(wires, ground_position)
     world = World(circuit=circuit, coordinate_system=CoordinateSystem.CARTESIAN, shape=WORLD_SHAPE)
