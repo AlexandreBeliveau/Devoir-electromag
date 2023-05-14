@@ -111,25 +111,25 @@ class BiotSavartEquationSolver:
 
         # On calcule Biot Savard pour tous les courants en r
         for i, j in coord_r:
-            I = I_r[i, j]
+            I = I_r[(i, j)]
 
             # On itère sur toutes la grille
             for r in range(N):
                 for th in range(M):
                     # Évite les divisions par 0
                     if (i, j) != (r, th):
-                        B_z[r, th] += I*(th-j)*delta_r/((r-i)**2+(th-j)**2)**(3/2)
+                        B_z[(r, th)] += I*(th-j)*delta_r/((r-i)**2+(th-j)**2)**(3/2)
 
-        # On calcule Biot Savard pour tous les courants en y
+        # On calcule Biot Savard pour tous les courants en theta
         for i, j in coord_th:
-            I = I_th[i, j]
+            I = I_th[(i, j)]
 
             # On itère sur toutes la grille
             for r in range(N):
                 for th in range(M):
                     # Évite les divisions par 0
                     if (i, j) != (r, th):
-                        B_z[r, th] += I*(i-r)*delta_theta/((r-i)**2+(th-j)**2)**(3/2)
+                        B_z[(r, th)] += I*(i-r)*i*delta_theta/((r-i)**2+(th-j)**2)**(3/2)
         # On crée une 3Darray
         B = np.dstack((np.zeros((N, M)), np.zeros((N, M)), mu_0/(4*pi)*B_z))
         return VectorField(B)
