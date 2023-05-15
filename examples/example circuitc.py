@@ -37,7 +37,7 @@ if __name__ == "__main__":
     pas = 0.1
     for i in range(1, sides):
         theta = old_theta + pas
-        if theta > theta_start-np.pi-0.1 and theta < theta_start-np.pi+0.1:
+        if theta > theta_start+np.pi-0.1 and theta < theta_start+np.pi+0.1:
             resistance = HIGH_WIRE_RESISTANCE
         else:
             resistance = LOW_WIRE_RESISTANCE
